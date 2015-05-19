@@ -2236,7 +2236,12 @@ class WhatsProt
         }
 
         if ($this->loginStatus === Constants::DISCONNECTED_STATUS) {
-            throw new LoginFailureException();
+            $this->eventManager()->fire("onLoginFailed",
+                array(
+                    $this->phoneNumber,
+                    $data
+                ));
+            return false;
         }
 
         $this->eventManager()->fire("onLogin",
